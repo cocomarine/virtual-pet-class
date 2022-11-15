@@ -16,12 +16,12 @@ class Pet {
         this.children = [];
     }
 
-    get Alive() {
+    get isAlive() {
         return this.fitness > 0 && this.hunger < MAXIMUM_HUNGER && this.age < MAXIMUM_AGE;
     }
 
     growUp() {
-        if(!this.Alive) {
+        if(!this.isAlive) {
             throw new Error('Your pet is no longer alive :(');
         }
         this.age = Math.min(this.age += 1, MAXIMUM_AGE);
@@ -30,19 +30,51 @@ class Pet {
     }
 
     walk() {
-        if(!this.Alive) {
+        if(!this.isAlive) {
             throw new Error('Your pet is no longer alive :(');
         }
         this.fitness = Math.min(this.fitness += FITNESS_INCREMENT, MAXIMUM_FITNESS);
     }
 
     feed() {
-        if(!this.Alive) {
+        if(!this.isAlive) {
             throw new Error('Your pet is no longer alive :(');
         }
         this.hunger = Math.max(this.hunger -= HUNGER_DECREMENT, 0);
     }
 
+    checkUp() {
+        if(!this.isAlive) {
+            return 'Your pet is no longer alive :(';
+        }
+
+        if (this.fitness <= 3 && this.hunger >= 5) {
+            return 'I am hungry AND I need a walk';
+        } else if (this.hunger >= 5) {
+            return 'I am hungry';
+        } else if (this.fitness <= 3) {
+            return 'I need a walk';
+        } else {
+            return 'I feel great!';
+        };
+    }
+
+    adoptChild(child) {
+        if(!this.isAlive) {
+            throw new Error('Your pet is no longer alive :(');
+        } else {
+            this.children.push(child);
+        }
+    }
+
+    haveBaby(child) {
+        if(!this.isAlive) {
+            throw new Error('Your pet is no longer alive :(');
+        } else {
+            const baby = new Pet (child);
+            this.children.push(baby);
+        }
+    }
 }
 
 module.exports = Pet;
